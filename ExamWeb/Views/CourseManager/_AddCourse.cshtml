@@ -1,0 +1,23 @@
+﻿@model ExamWeb.Models.CourseViewModels.CourseVM
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true)
+
+            <div class="form-group">
+                    @Html.LabelFor(model => model.CourseName)
+                    @Html.TextBoxFor(model => model.CourseName, new { @class = "form-control", @placeholder="Enter Course Name" })
+                    @Html.ValidationMessageFor(model => model.CourseName)
+
+            </div>
+          <input type="submit" value="Create" class="btn btn-default" />
+            
+        </div>
+    }
+
+

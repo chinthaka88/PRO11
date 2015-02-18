@@ -1,0 +1,589 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ExaminationDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChoiceDescription" Type="nvarchar(max)" />
+          <Property Name="QuestionID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CourseName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Examination">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="CutOffMark" Type="int" Nullable="false" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+          <Property Name="Duration" Type="int" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaterialName" Type="nvarchar(max)" />
+          <Property Name="MaterialResourceURL" Type="nvarchar(max)" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QuestionDescription" Type="nvarchar(max)" />
+          <Property Name="CorrectAnsID" Type="int" />
+          <Property Name="ExaminationID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trainee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TraineeName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TraineeCourseEnrollment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TraineeID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CourseID" Type="int" Nullable="false" />
+          <Property Name="EnrolledDate" Type="datetime" Nullable="false" />
+          <Property Name="IsEnrolled" Type="bit" />
+        </EntityType>
+        <EntityType Name="TraineeExamEnrollment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="Marks" Type="float" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="TraineeID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ExaminationID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Choice_dbo_Question_QuestionID">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Examination_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Material_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Question_dbo_Examination_ExaminationID">
+          <End Role="Examination" Type="Self.Examination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Examination">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExaminationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeCourseEnrollment" Type="Self.TraineeCourseEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeCourseEnrollment">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID">
+          <End Role="Trainee" Type="Self.Trainee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeCourseEnrollment" Type="Self.TraineeCourseEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeCourseEnrollment">
+              <PropertyRef Name="TraineeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID">
+          <End Role="Examination" Type="Self.Examination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeExamEnrollment" Type="Self.TraineeExamEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Examination">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeExamEnrollment">
+              <PropertyRef Name="ExaminationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID">
+          <End Role="Trainee" Type="Self.Trainee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeExamEnrollment" Type="Self.TraineeExamEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeExamEnrollment">
+              <PropertyRef Name="TraineeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExaminationDBModelStoreContainer">
+          <EntitySet Name="Choice" EntityType="Self.Choice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Examination" EntityType="Self.Examination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Question" EntityType="Self.Question" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trainee" EntityType="Self.Trainee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TraineeCourseEnrollment" EntityType="Self.TraineeCourseEnrollment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TraineeExamEnrollment" EntityType="Self.TraineeExamEnrollment" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Choice_dbo_Question_QuestionID" Association="Self.FK_dbo_Choice_dbo_Question_QuestionID">
+            <End Role="Question" EntitySet="Question" />
+            <End Role="Choice" EntitySet="Choice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Examination_dbo_Course_CourseID" Association="Self.FK_dbo_Examination_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Examination" EntitySet="Examination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Material_dbo_Course_CourseID" Association="Self.FK_dbo_Material_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Question_dbo_Examination_ExaminationID" Association="Self.FK_dbo_Question_dbo_Examination_ExaminationID">
+            <End Role="Examination" EntitySet="Examination" />
+            <End Role="Question" EntitySet="Question" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID" Association="Self.FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Course" />
+            <End Role="TraineeCourseEnrollment" EntitySet="TraineeCourseEnrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID" Association="Self.FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID">
+            <End Role="Trainee" EntitySet="Trainee" />
+            <End Role="TraineeCourseEnrollment" EntitySet="TraineeCourseEnrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID" Association="Self.FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID">
+            <End Role="Examination" EntitySet="Examination" />
+            <End Role="TraineeExamEnrollment" EntitySet="TraineeExamEnrollment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID" Association="Self.FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID">
+            <End Role="Trainee" EntitySet="Trainee" />
+            <End Role="TraineeExamEnrollment" EntitySet="TraineeExamEnrollment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ExaminationDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Choice">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ChoiceDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="QuestionID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Question" Relationship="Self.FK_dbo_Choice_dbo_Question_QuestionID" FromRole="Choice" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="Course">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CourseName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Examinations" Relationship="Self.FK_dbo_Examination_dbo_Course_CourseID" FromRole="Course" ToRole="Examination" />
+          <NavigationProperty Name="Materials" Relationship="Self.FK_dbo_Material_dbo_Course_CourseID" FromRole="Course" ToRole="Material" />
+          <NavigationProperty Name="TraineeCourseEnrollments" Relationship="Self.FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID" FromRole="Course" ToRole="TraineeCourseEnrollment" />
+        </EntityType>
+        <EntityType Name="Examination">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CutOffMark" Type="Int32" Nullable="false" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_dbo_Examination_dbo_Course_CourseID" FromRole="Examination" ToRole="Course" />
+          <NavigationProperty Name="Questions" Relationship="Self.FK_dbo_Question_dbo_Examination_ExaminationID" FromRole="Examination" ToRole="Question" />
+          <NavigationProperty Name="TraineeExamEnrollments" Relationship="Self.FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID" FromRole="Examination" ToRole="TraineeExamEnrollment" />
+          <Property Name="Duration" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaterialName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialResourceURL" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_dbo_Material_dbo_Course_CourseID" FromRole="Material" ToRole="Course" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CorrectAnsID" Type="Int32" />
+          <Property Name="ExaminationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Choices" Relationship="Self.FK_dbo_Choice_dbo_Question_QuestionID" FromRole="Question" ToRole="Choice" />
+          <NavigationProperty Name="Examination" Relationship="Self.FK_dbo_Question_dbo_Examination_ExaminationID" FromRole="Question" ToRole="Examination" />
+        </EntityType>
+        <EntityType Name="Trainee">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TraineeName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TraineeCourseEnrollments" Relationship="Self.FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID" FromRole="Trainee" ToRole="TraineeCourseEnrollment" />
+          <NavigationProperty Name="TraineeExamEnrollments" Relationship="Self.FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID" FromRole="Trainee" ToRole="TraineeExamEnrollment" />
+        </EntityType>
+        <EntityType Name="TraineeCourseEnrollment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TraineeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CourseID" Type="Int32" Nullable="false" />
+          <Property Name="EnrolledDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsEnrolled" Type="Boolean" />
+          <NavigationProperty Name="Course" Relationship="Self.FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID" FromRole="TraineeCourseEnrollment" ToRole="Course" />
+          <NavigationProperty Name="Trainee" Relationship="Self.FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID" FromRole="TraineeCourseEnrollment" ToRole="Trainee" />
+        </EntityType>
+        <EntityType Name="TraineeExamEnrollment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Marks" Type="Double" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <Property Name="TraineeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExaminationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Examination" Relationship="Self.FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID" FromRole="TraineeExamEnrollment" ToRole="Examination" />
+          <NavigationProperty Name="Trainee" Relationship="Self.FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID" FromRole="TraineeExamEnrollment" ToRole="Trainee" />
+        </EntityType>
+        <Association Name="FK_dbo_Choice_dbo_Question_QuestionID">
+          <End Role="Question" Type="Self.Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Choice" Type="Self.Choice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Choice">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Examination_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Examination" Type="Self.Examination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Examination">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Material_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID">
+          <End Role="Course" Type="Self.Course" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeCourseEnrollment" Type="Self.TraineeCourseEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeCourseEnrollment">
+              <PropertyRef Name="CourseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Question_dbo_Examination_ExaminationID">
+          <End Role="Examination" Type="Self.Examination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Question" Type="Self.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Examination">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="ExaminationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID">
+          <End Role="Examination" Type="Self.Examination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeExamEnrollment" Type="Self.TraineeExamEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Examination">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeExamEnrollment">
+              <PropertyRef Name="ExaminationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID">
+          <End Role="Trainee" Type="Self.Trainee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeCourseEnrollment" Type="Self.TraineeCourseEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeCourseEnrollment">
+              <PropertyRef Name="TraineeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID">
+          <End Role="Trainee" Type="Self.Trainee" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TraineeExamEnrollment" Type="Self.TraineeExamEnrollment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainee">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TraineeExamEnrollment">
+              <PropertyRef Name="TraineeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ExaminationDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Choices" EntityType="Self.Choice" />
+          <EntitySet Name="Courses" EntityType="Self.Course" />
+          <EntitySet Name="Examinations" EntityType="Self.Examination" />
+          <EntitySet Name="Materials" EntityType="Self.Material" />
+          <EntitySet Name="Questions" EntityType="Self.Question" />
+          <EntitySet Name="Trainees" EntityType="Self.Trainee" />
+          <EntitySet Name="TraineeCourseEnrollments" EntityType="Self.TraineeCourseEnrollment" />
+          <EntitySet Name="TraineeExamEnrollments" EntityType="Self.TraineeExamEnrollment" />
+          <AssociationSet Name="FK_dbo_Choice_dbo_Question_QuestionID" Association="Self.FK_dbo_Choice_dbo_Question_QuestionID">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Choice" EntitySet="Choices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Examination_dbo_Course_CourseID" Association="Self.FK_dbo_Examination_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Examination" EntitySet="Examinations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Material_dbo_Course_CourseID" Association="Self.FK_dbo_Material_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Material" EntitySet="Materials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID" Association="Self.FK_dbo_TraineeCourseEnrollment_dbo_Course_CourseID">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="TraineeCourseEnrollment" EntitySet="TraineeCourseEnrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Question_dbo_Examination_ExaminationID" Association="Self.FK_dbo_Question_dbo_Examination_ExaminationID">
+            <End Role="Examination" EntitySet="Examinations" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID" Association="Self.FK_dbo_TraineeExamEnrollment_dbo_Examination_ExaminationID">
+            <End Role="Examination" EntitySet="Examinations" />
+            <End Role="TraineeExamEnrollment" EntitySet="TraineeExamEnrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID" Association="Self.FK_dbo_TraineeCourseEnrollment_dbo_Trainee_TraineeID">
+            <End Role="Trainee" EntitySet="Trainees" />
+            <End Role="TraineeCourseEnrollment" EntitySet="TraineeCourseEnrollments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID" Association="Self.FK_dbo_TraineeExamEnrollment_dbo_Trainee_TraineeID">
+            <End Role="Trainee" EntitySet="Trainees" />
+            <End Role="TraineeExamEnrollment" EntitySet="TraineeExamEnrollments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ExaminationDBModelStoreContainer" CdmEntityContainer="ExaminationDBEntities1">
+          <EntitySetMapping Name="Choices">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Choice">
+              <MappingFragment StoreEntitySet="Choice">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ChoiceDescription" ColumnName="ChoiceDescription" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Courses">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Course">
+              <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CourseName" ColumnName="CourseName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Examinations">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Examination">
+              <MappingFragment StoreEntitySet="Examination">
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="CutOffMark" ColumnName="CutOffMark" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Materials">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="MaterialResourceURL" ColumnName="MaterialResourceURL" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Question">
+              <MappingFragment StoreEntitySet="Question">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="QuestionDescription" ColumnName="QuestionDescription" />
+                <ScalarProperty Name="CorrectAnsID" ColumnName="CorrectAnsID" />
+                <ScalarProperty Name="ExaminationID" ColumnName="ExaminationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trainees">
+            <EntityTypeMapping TypeName="ExaminationDBModel.Trainee">
+              <MappingFragment StoreEntitySet="Trainee">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TraineeName" ColumnName="TraineeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TraineeCourseEnrollments">
+            <EntityTypeMapping TypeName="ExaminationDBModel.TraineeCourseEnrollment">
+              <MappingFragment StoreEntitySet="TraineeCourseEnrollment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TraineeID" ColumnName="TraineeID" />
+                <ScalarProperty Name="CourseID" ColumnName="CourseID" />
+                <ScalarProperty Name="EnrolledDate" ColumnName="EnrolledDate" />
+                <ScalarProperty Name="IsEnrolled" ColumnName="IsEnrolled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TraineeExamEnrollments">
+            <EntityTypeMapping TypeName="ExaminationDBModel.TraineeExamEnrollment">
+              <MappingFragment StoreEntitySet="TraineeExamEnrollment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Marks" ColumnName="Marks" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="TraineeID" ColumnName="TraineeID" />
+                <ScalarProperty Name="ExaminationID" ColumnName="ExaminationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,91 @@
+﻿@model ExamWeb.Models.TraineeViewModels.TraineeCoursesManagerVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Menu {
+    @RenderPage("~/Views/Shared/_SideMenuUser.cshtml")
+}
+
+
+
+<h2>Course Enrollments</h2>
+
+<div class="box ui-draggable ui-droppable">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-calendar-o"></i>
+            <span>Trainees</span>
+        </div>
+    </div>
+
+
+    <div class="box-content">
+        <h2>Enrolled Courses</h2>
+        <table class="table table-bordered table-striped table-hover table-heading table-datatable">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.EnrolledCourses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+
+                        <a href="/CourseEnrollment/UnEnroll/@item.ID" class="btn btn-danger btn-sm" style="padding-left:5px;">UnEnroll</a>
+                    </td>
+                    <td>
+
+                        <a href="/CourseEnrollment/Exams/@item.ID" class="btn btn-default btn-sm" style="padding-left:5px;">View Exams</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <h2>Un Enrolled Courses</h2>
+        <table class="table table-bordered table-striped table-hover table-heading table-datatable">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.UnEnrolledCourses)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+
+                        <a href="/CourseEnrollment/Enroll/@item.ID" class="btn btn-info btn-sm" style="padding-left:5px;">Enroll</a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

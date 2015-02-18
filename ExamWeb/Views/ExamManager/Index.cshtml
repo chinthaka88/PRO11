@@ -1,0 +1,106 @@
+﻿@model ExamWeb.Models.ExamViewModels.ExamManagerVM
+
+
+@RenderPage("~/Views/Shared/_PopupModel.cshtml")
+
+@section Menu {
+    @RenderPage("~/Views/Shared/_SideMenuAdmin.cshtml")
+}
+
+<div class="box ui-draggable ui-droppable">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-calendar-o"></i>
+            <span>Examination Manger</span>
+        </div>
+
+    </div>
+
+
+    <div class="box-content">
+
+
+        <div class="row">
+
+            <a id="btnAddExam" href="#" class="btn btn-success btn-lg" style="float:left"><span class="glyphicon glyphicon-plus"></span>Add Examination</a>
+            <a class="btn btn-primary btn-large" id="testbtn1" style="float:right">Add Course</a>
+
+            <div style="float:right">
+                @Html.DropDownListFor(model => model.CourseID, new SelectList(Model.Courses, "ID", "CourseName"), new { id = "CourseID", @class = "form-control" })
+            </div>
+
+        </div>
+
+
+
+        <div class="row" id="ExamTable">
+            @if (Model.Exams != null)
+            {
+                @Html.Partial("~/Views/CourseManager/_ExamsTable.cshtml", Model.Exams)
+            }
+        </div>
+
+
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    jQuery(function () {
+
+        $("#CourseID").change(function () {
+            $('#modeldata').empty();
+            $('#ExamTable').html('<img src="http://www.bba-reman.com/images/fbloader.gif" />');
+
+            $.ajax({
+                type: "GET",
+                url: "/CourseManager/GetExamsByCourse/" + $('#CourseID :selected').val(),
+                datatype: "html",
+                success: function (data) {
+
+                    $('#ExamTable').empty();
+                    $('#ExamTable').html(data);
+
+                }
+            });
+        });
+
+
+        $('#testbtn1').click(function () {
+            $('#modeldata').html('<img src="http://www.bba-reman.com/images/fbloader.gif" />');
+            $.ajax({
+                type: "GET",
+                url: "/CourseManager/Create",
+                datatype: "html",
+                success: function (data) {
+
+                    $('#modeldata').empty();
+                    $('#modeldata').html(data);
+                    $('#smallModal').modal();
+                }
+            });
+
+        });
+
+        $('#btnAddExam').click(function () {
+            $('#modeldata').html('<img src="http://www.bba-reman.com/images/fbloader.gif" />');
+
+            $('#myModalLabel').text("Add Examination");
+            $.ajax({
+                type: "GET",
+                url: "/ExamManager/CreatePartial/" + $('#CourseID :selected').val(),
+                datatype: "html",
+                success: function (data) {
+
+
+                    $('#modeldata').html(data);
+                    $('#smallModal').modal();
+                }
+            });
+
+        });
+
+        
+    });
+</script>

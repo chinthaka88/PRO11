@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ExamWeb.Models.TraineeViewModels.TraineeVM>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="box ui-draggable ui-droppable">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-calendar-o"></i>
+            <span>Trainees</span>
+        </div>
+
+    </div>
+
+
+    <div class="box-content">
+        <table class="table table-bordered table-striped table-hover table-heading table-datatable">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TraineeName)
+                </th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TraineeName)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+</div>
+</div>

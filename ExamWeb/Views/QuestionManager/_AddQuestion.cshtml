@@ -1,0 +1,22 @@
+﻿@model ExamWeb.Models.QuestionViewModels.QuestionVM
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm("Create","QuestionManager"))
+{ 
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div></div>
+        <div>@Html.HiddenFor(model => model.ExaminationID)</div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionDescription)
+            @Html.TextAreaFor(model => model.QuestionDescription, new { @class = "form-control", @placeholder = "Enter Question Description" })
+            @Html.ValidationMessageFor(model => model.QuestionDescription)
+
+        </div>
+        <input type="submit" value="Create" class="btn btn-default" />
+
+    </div>
+}

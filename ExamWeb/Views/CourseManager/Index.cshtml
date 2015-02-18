@@ -1,0 +1,70 @@
+﻿@model ExamWeb.Models.ExamViewModels.ExamMasterVM
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@section Menu {
+    @RenderPage("~/Views/Shared/_SideMenuAdmin.cshtml")
+}
+
+<div class="row">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.ID)
+                @Html.DropDownList("ID")
+               
+                @Html.ValidationMessageFor(model => model.ID)
+
+            </div>
+
+        </div>
+    }
+
+    <a class="btn btn-primary btn-large" id="testbtn1">Create</a>
+
+</div>
+
+<div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="smallModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">New Course</h4>
+            </div>
+            <div class="modal-body">
+                <div id="modeldata"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    jQuery(function () {
+
+        $('#testbtn1').click(function () {
+
+            $.ajax({
+                type: "GET",
+                url: "/CourseManager/Create",
+                datatype: "html",
+                success: function (data) {
+
+                    $('#modeldata').empty();
+                    $('#modeldata').html(data);
+                    $('#smallModal').modal();
+                }
+            });
+
+        });
+    });
+</script>
+
+

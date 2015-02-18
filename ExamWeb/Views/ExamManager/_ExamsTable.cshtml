@@ -1,0 +1,44 @@
+﻿@model ExamWeb.Models.ExamViewModels.ExamListVM
+@using ExamWeb.Models.ExamViewModels
+<!--Start : Data Table-->
+<table class="table table-bordered table-striped table-hover table-heading table-datatable" id="datatable-1">
+    <thead>
+        <tr>
+            <th>Exam ID</th>
+            <th>Examination Name</th>
+            <th>Pass Mark</th>
+            <th>Duration(Munites)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Start: list_row -->
+   
+    @foreach(ExamVM exam in Model.Exams)
+    { 
+        <tr>
+            <td>@exam.ID</td>
+            <td>@exam.Description</td>
+            <td>@exam.CutOffMark</td>
+            <td>@exam.Duration</td>
+            <td></td>
+
+        </tr>
+    }
+       
+
+
+        <!-- End: list_row -->
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Exam ID</th>
+            <th>Examination Name</th>
+            <th>Pass Mark</th>
+            <th>Duration(Munites)</th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+
+<!--End : Data Table-->

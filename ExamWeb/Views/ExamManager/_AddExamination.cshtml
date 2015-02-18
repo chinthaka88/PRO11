@@ -1,0 +1,36 @@
+﻿@model ExamWeb.Models.ExamViewModels.ExamVM
+
+@Scripts.Render("~/bundles/jqueryval")
+
+@using (Html.BeginForm("Create", "ExamManager", FormMethod.Post, new { id = "createForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        
+       <div>@Model.CourseID</div>
+        <div>@Html.HiddenFor(model => model.CourseID)</div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description)
+            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @placeholder = "Enter Examination Name" })
+            @Html.ValidationMessageFor(model => model.Description)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CutOffMark)
+            @Html.TextBoxFor(model => model.CutOffMark, new { @class = "form-control", @placeholder = "Enter Cut Off Marks" })
+            @Html.ValidationMessageFor(model => model.CutOffMark)
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duration)
+            @Html.TextBoxFor(model => model.Duration, new { @class = "form-control", @placeholder = "Enter Duration" })
+            @Html.ValidationMessageFor(model => model.Duration)
+
+        </div>
+        <input type="submit" value="Create" class="btn btn-default" />
+
+    </div>
+}

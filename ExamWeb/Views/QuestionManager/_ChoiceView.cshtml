@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ExamWeb.Models.ChoiceViewModels.ChoiceVM>
+@using ExamWeb.Models.ChoiceViewModels
+
+
+
+@foreach (ChoiceVM vm in Model)
+{
+
+    <div style="background-color:@vm.AnswerColor" quesid="@vm.QuestionID">
+        
+            <a name="btnSetCorrectChoice" url="/QuestionManager/SetAsCorrectChoice/@vm.QuestionID?correctChoiceId=@vm.ID" class="btn btn-info btn-sm" style="padding-left:5px;">Set As Correct</a>
+            @vm.ChoiceDescription
+        <hr />
+    </div>
+
+   
+}
+
+<script type="text/javascript">
+    jQuery(function () {
+
+
+        $('[name=btnSetCorrectChoice]').click(function () {
+            var self = this;
+            $.ajax({
+                type: "GET",
+                url: $(this).attr('url'),
+                datatype: "json",
+                success: function (data) {
+                    var selected = jQuery(self).parent().attr("quesid");
+                    $("[quesid="+selected+"]").each(function () {
+                        $(this).css({ "background-color": "" });
+                    });
+                    jQuery(self).parent().css({ "background-color": "#E1EDCE" });
+                   
+                    
+                }
+            });
+
+        });
+
+       
+
+    });
+</script>

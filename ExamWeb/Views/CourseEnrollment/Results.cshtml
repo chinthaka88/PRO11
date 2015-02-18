@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ExamWeb.Models.TraineeViewModels.TraineeResultVM>
+
+@{
+    ViewBag.Title = "Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="box ui-draggable ui-droppable">
+    <div class="box-header">
+        <div class="box-name">
+            <i class="fa fa-calendar-o"></i>
+            <span>Examination Results</span>
+        </div>
+
+
+    </div>
+
+
+    <div class="box-content">
+        <table class="table table-bordered table-striped table-hover table-heading table-datatable">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Marks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExamName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CourseName)
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Marks)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExamName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
+</div>
+</div>
